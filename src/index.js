@@ -6,13 +6,15 @@ const employees = document.querySelector("#employees");
 const nameInput = document.querySelector("#name");
 const departmentInput = document.querySelector("#department");
 const salaryInput = document.querySelector("#salary");
+const card = document.querySelectorAll(".card-body")[1];
 
 const request = new Request("http://localhost:3000/employe");
 const ui = new UI();
 
 function eventListeners() {
   form.addEventListener("submit", addEmployeeToList);
-  document.addEventListener("DOMContentLoaded", getAllEmployeesFromAPI)
+  document.addEventListener("DOMContentLoaded", getAllEmployeesFromAPI);
+  card.addEventListener("click", updateOrDeleteEmployee);
 }
 
 const getAllEmployeesFromAPI = () => {
@@ -40,11 +42,13 @@ const addEmployeeToList = (e) => {
   e.preventDefault();
 }
 
-const addEmployee = () => {
+const updateOrDeleteEmployee = (e) => {
+  if (e.target.id === "delete-employee") {
+    request.delete(e.target.parentElement.previousElementSibling.previousElementSibling.textContent)
+      .then(message => ui.clearEmployeeFromUI(e.target))
+      .catch(err => console.log(err));
 
-
-
-
+  }
 }
 
 eventListeners();

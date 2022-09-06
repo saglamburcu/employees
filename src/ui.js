@@ -39,4 +39,8 @@ export class UI {
       </tr>
     `
   }
+
+  clearEmployeeFromUI(element) {
+    element.parentElement.parentElement.remove()
+  }
 }
