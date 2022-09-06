@@ -6,7 +6,8 @@
   "scripts": {
     "test": "This is a test",
     "start": "webpack-dev-server --output-public-path=/bundles/  --mode development --open --hot",
-    "build": "webpack --progress"
+    "build": "webpack --progress",
+    "server": "json-server --watch fake_api/employee.json"
   },
   "keywords": [
     "employee",
