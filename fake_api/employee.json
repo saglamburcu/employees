@@ -1,0 +1,16 @@
+{
+  "employe": [
+    {
+      "id": 1,
+      "name": "User1",
+      "department": "Bilişim",
+      "salary": 4000
+    },
+    {
+      "id": 2,
+      "name": "User2",
+      "department": "Bilişim",
+      "salary": 5000
+    }
+  ]
+}
