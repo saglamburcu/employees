@@ -2,14 +2,13 @@ import { Request } from "./request";
 import { UI } from "./ui";
 
 const form = document.querySelector("#employee-form");
-const employees = document.querySelector("#employees");
 const nameInput = document.querySelector("#name");
 const departmentInput = document.querySelector("#department");
 const salaryInput = document.querySelector("#salary");
 const secondCard = document.querySelectorAll(".card-body")[1];
 const updateBtn = document.querySelector("#update");
 
-let employeeId;
+let employeeInfo = null;
 
 const request = new Request("http://localhost:3000/employe");
 const ui = new UI();
@@ -18,7 +17,7 @@ function eventListeners() {
   form.addEventListener("submit", addEmployeeToList);
   document.addEventListener("DOMContentLoaded", getAllEmployeesFromAPI);
   secondCard.addEventListener("click", updateOrDeleteEmployee);
-
+  updateBtn.addEventListener("click", updateEmployee);
 }
 
 const getAllEmployeesFromAPI = () => {
@@ -54,39 +53,32 @@ const updateOrDeleteEmployee = (e) => {
 
   } else if (e.target.id === "update-employee") {
 
-    employeeId = e.target.parentElement.previousElementSibling.textContent;
-    let employeeName = e.target.parentElement.parentElement.children[0].textContent;
-    let employeeDepartment = e.target.parentElement.parentElement.children[1].textContent;
-    let employeeSalary = e.target.parentElement.parentElement.children[2].textContent;
-
-    nameInput.value = employeeName;
-    departmentInput.value = employeeDepartment;
-    salaryInput.value = employeeSalary;
-
+    ui.showInputArea(e.target.parentElement.parentElement);
     ui.showUpdateButton(updateBtn);
-    updateEmployee(employeeName, employeeDepartment, employeeSalary)
+
+    if (employeeInfo === null) {
+      employeeInfo = {
+        empId: e.target.parentElement.parentElement.children[3].textContent,
+        emp: e.target.parentElement.parentElement
+      }
+    } else {
+      employeeInfo = null;
+    }
 
   }
 }
 
-const updateEmployee = (empName, empDepartment, employeeSalary) => {
-  updateBtn.addEventListener("click", () => {
-    request.put(employeeId, {
-      name: nameInput.value,
-      department: departmentInput.value,
-      salary: salaryInput.value
+const updateEmployee = () => {
+  request.put(employeeInfo.empId, {
+    name: nameInput.value,
+    department: departmentInput.value,
+    salary: salaryInput.value
 
-    }).then(resp => {
-
-      empName = resp.name;
-      empDepartment = resp.department;
-      employeeSalary = resp.salary;
-
-      ui.clearInputs();
-      ui.hideUpdateButton(updateBtn);
-
-    }).catch(err => console.log(err))
-  });
-
+  }).then(resp => {
+    console.log(employeeInfo, resp)
+    ui.addUpdatedEmployeeToUI(employeeInfo.emp, resp);
+    ui.hideUpdateButton(updateBtn);
+  })
 }
+
 eventListeners();
