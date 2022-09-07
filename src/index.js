@@ -75,7 +75,6 @@ const updateEmployee = () => {
     salary: salaryInput.value
 
   }).then(resp => {
-    console.log(employeeInfo, resp)
     ui.addUpdatedEmployeeToUI(employeeInfo.emp, resp);
     ui.hideUpdateButton(updateBtn);
   })
