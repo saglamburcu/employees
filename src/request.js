@@ -1,6 +1,7 @@
 export class Request {
   constructor(url) {
     this.url = url;
+    this.updateId = null;
   }
 
   async get() {
@@ -41,4 +42,5 @@ export class Request {
 
     return "Veri silme işlemi başarılı"
   }
+
 }

@@ -43,4 +43,12 @@ export class UI {
   clearEmployeeFromUI(element) {
     element.parentElement.parentElement.remove()
   }
+
+  showUpdateButton(element) {
+    element.style.display = "block";
+  }
+
+  hideUpdateButton(element) {
+    element.style.display = "none";
+  }
 }

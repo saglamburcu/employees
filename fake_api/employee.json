@@ -1,15 +1,15 @@
 {
   "employe": [
     {
-      "name": "User1",
-      "department": "Bilişim",
-      "salary": 5000,
+      "name": "user1",
+      "department": "bilişim",
+      "salary": "10000",
       "id": 1
     },
     {
-      "name": "User2",
-      "department": "Bilişim",
-      "salary": 4000,
+      "name": "user2",
+      "department": "bilişim",
+      "salary": "6000",
       "id": 2
     }
   ]

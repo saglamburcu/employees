@@ -6,7 +6,10 @@ const employees = document.querySelector("#employees");
 const nameInput = document.querySelector("#name");
 const departmentInput = document.querySelector("#department");
 const salaryInput = document.querySelector("#salary");
-const card = document.querySelectorAll(".card-body")[1];
+const secondCard = document.querySelectorAll(".card-body")[1];
+const updateBtn = document.querySelector("#update");
+
+let employeeId;
 
 const request = new Request("http://localhost:3000/employe");
 const ui = new UI();
@@ -14,7 +17,8 @@ const ui = new UI();
 function eventListeners() {
   form.addEventListener("submit", addEmployeeToList);
   document.addEventListener("DOMContentLoaded", getAllEmployeesFromAPI);
-  card.addEventListener("click", updateOrDeleteEmployee);
+  secondCard.addEventListener("click", updateOrDeleteEmployee);
+
 }
 
 const getAllEmployeesFromAPI = () => {
@@ -48,7 +52,41 @@ const updateOrDeleteEmployee = (e) => {
       .then(message => ui.clearEmployeeFromUI(e.target))
       .catch(err => console.log(err));
 
+  } else if (e.target.id === "update-employee") {
+
+    employeeId = e.target.parentElement.previousElementSibling.textContent;
+    let employeeName = e.target.parentElement.parentElement.children[0].textContent;
+    let employeeDepartment = e.target.parentElement.parentElement.children[1].textContent;
+    let employeeSalary = e.target.parentElement.parentElement.children[2].textContent;
+
+    nameInput.value = employeeName;
+    departmentInput.value = employeeDepartment;
+    salaryInput.value = employeeSalary;
+
+    ui.showUpdateButton(updateBtn);
+    updateEmployee(employeeName, employeeDepartment, employeeSalary)
+
   }
 }
 
+const updateEmployee = (empName, empDepartment, employeeSalary) => {
+  updateBtn.addEventListener("click", () => {
+    request.put(employeeId, {
+      name: nameInput.value,
+      department: departmentInput.value,
+      salary: salaryInput.value
+
+    }).then(resp => {
+
+      empName = resp.name;
+      empDepartment = resp.department;
+      employeeSalary = resp.salary;
+
+      ui.clearInputs();
+      ui.hideUpdateButton(updateBtn);
+
+    }).catch(err => console.log(err))
+  });
+
+}
 eventListeners();
